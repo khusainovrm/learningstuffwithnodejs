@@ -1,0 +1,23 @@
+{
+  "name": "testingnode",
+  "version": "1.0.0",
+  "description": "testing node in action",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "production": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "test"
+  ],
+  "author": "Rinat Khusainov <khusainovrm@yandex.ru>",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
