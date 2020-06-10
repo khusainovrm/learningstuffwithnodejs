@@ -3,6 +3,8 @@ const path = require('path')
 const fs = require('fs')
 const app = express()
 const {join} = require('path')
+const process = require('process')
+require('dotenv').config()
 
 
 const fileHome = path.resolve(__dirname, './public/home.html')
@@ -50,6 +52,10 @@ app.get('/stuff', (req, res) => {
   })
 })
 
-console.log(process.env);
+process.env.foo = 'bar'
+console.log('Using script with cross-env: ', process.env.NODE_ENV);
+console.log('Using dotenv: ', process.env.myKey);
+
+
 
 app.listen(3000, () => console.log('Server has been started at', new Date().toLocaleTimeString()));
