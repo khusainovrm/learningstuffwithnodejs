@@ -1,0 +1,18 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+.home, .about {
+  font-size: 2em;
+  padding-left: 15px;
+}
+
+.navbar{
+  height: 45px;
+  width: 100vw;
+  background: #ccc;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+}

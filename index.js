@@ -1,52 +1,38 @@
-const http = require('http')
-const https = require('https')
-const path = require('path')
 const express = require('express')
-const axios = require('axios')
+const path = require('path')
+const fs = require('fs')
+const app = express()
+const {join} = require('path')
 
 
-// const app = express()
-// app.use(express.static(path.resolve(__dirname)))
-// app.get('*', (req,res) => {
-//     res.sendFile(path.resolve(__dirname, 'page.html'))
-// })
-//app.listen(3000, ()=> console.log('Server has been started...'))
+const fileHome = path.resolve(__dirname, './public/home.html')
+const fileAbout = path.resolve(__dirname, './public/about.html')
+
+let writableStream = fs.createWriteStream('hello.txt')
+writableStream.write('\nHello from NodeJS')
+writableStream.write("That's it!")
+writableStream.end('End of the note')
+let readableStream = fs.createReadStream('hello.txt', 'utf8')
+
+readableStream.on('data', chunk => console.log(chunk));
 
 
-// native method without express how to start server
+app.use(express.static(join(__dirname, 'public')))
 
-const filePath = path.resolve(__dirname, 'page.html')
-http.createServer((req,res) => {
-    res.writeHead(200, {
-        'Content-Type':'text/html'
-    })
-    res.end('Endd')
-}).listen(3000, ()=> console.log('Server has been started...'))
+app.get('/home', (req, res) => {
+  fs.readFile(fileHome, (err, data) => {
+    if (err) throw err
+    res.sendFile(fileHome)
+  })
+})
 
-
-// function compute() {
-//     for (let i = 0; i < 1000; i ++) {
-//         console.log(`This is comptued i = ${i}`);
-//     }
-//     setImmediate(compute)  // - не блокирует сервер
-//     // Promise.resolve().then(compute)   // - блокирует сервер, является микротаском, нет хард ограничения в Eventloop
-// }
-
-// compute()
-
+app.get('/about', (req, res) => {
+  fs.readFile(fileAbout, (err, data) => {
+    if (err) throw err
+    res.sendFile(fileAbout)
+  })
+})
 
 
 
-// Первый вариант
-// https.get('https://jsonplaceholder.typicode.com/todos/1', response => {
-//     let todo = ''
-//     response.on('data', (chunk) => {
-//         todo += chunk
-//     })
-//     response.on('end', () => {
-//         console.log(JSON.parse(todo))
-//     })
-// }).on('error', (error) => console.log('Error' + error.message))
-
-// Второй вариант с axios
-// axios.get('https://jsonplaceholder.typicode.com/todos/1').then(res => console.log(res.data))
+app.listen(3000, () => console.log('Server has been started at', new Date().toLocaleTimeString()));
