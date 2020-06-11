@@ -12,10 +12,12 @@
     <a href="/about">About</a>
   </div>
   <h1>Register</h1>
-  <form action="/register" method="POST">
+  <form action="/register" method="POST" name="registerForm">
     <input type="text" name='userName'  placeholder="Напишите имя"/><br><br>
     <input type="number" name='userAge' placeholder="Ваш возраст"><br><br>
-    <input type="submit" value="Send">
+    <button type="submit" id='submit' value="Send">Send</button>
   </form>
+
+  <script type="module" src="/register.js"></script>
 </body>
 </html>

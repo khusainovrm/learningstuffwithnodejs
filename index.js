@@ -5,14 +5,20 @@ const app = express()
 const {join} = require('path')
 const process = require('process')
 const bodyParser = require('body-parser')
+const jsonParser = express.json()
 require('dotenv').config()
 
 // Создаем боди-парсер, для парснига пост-форм
+const fileJson  = path.resolve(__dirname, './public/user.json')
+// Значение {extended: false} указывает, что объект - результат парсинга будет представлять 
+// набор пар ключ-значение, 
+// а каждое значение может быть представлено в виде строки или массива.
 const urlEncodeParser = bodyParser.urlencoded({extended:false})
 
 const fileHome = path.resolve(__dirname, './public/home.html')
 const fileAbout = path.resolve(__dirname, './public/about.html')
 const fileRegister = path.resolve(__dirname, './public/register.html')
+const fileJsonUser  = path.resolve(__dirname, './public/user.json')
 
 
 let writableStream = fs.createWriteStream('hello.txt')
@@ -62,11 +68,23 @@ app.get('/register', (req, res) => {
   })
 })
 
+
 app.post('/register', urlEncodeParser, (req,res) => {
+  if (!req.body) return res.sendStatus(400)
   const name = req.body.userName
   const age = req.body.userAge
 
 res.send(`<div class='greetings'>Добро пожаловать ${name}, Вам ${age}, вы очень молоды!</div>`)
+})
+
+app.post('/user', jsonParser, (req, res) => {
+  res.json(req.body)
+})
+
+app.use('/products/:name/year/:year', (req, res) => {
+  let  name = req.params['name']
+  let year = req.params['year']
+  res.send(`Запрашиваемый товар: ${req.params['name']}, ${year} года выпуска`)
 })
 
 
@@ -87,6 +105,23 @@ app.get('/stuff', (req, res) => {
 
 app.use('/log', (req, res) => {
   res.redirect('home')
+})
+
+// API
+app.get('/api/users/:id', (req, res) => {
+  let content = fs.readFileSync(fileJsonUser, 'utf8')
+  let users = JSON.parse(content)
+  console.log(users)
+  let id = +req.params['id']
+  let user = null
+  if (id) {
+    user = users.filter(user => user['id'] === id)
+    console.log(id);
+    
+    console.log(user);
+    
+    res.send(user)
+  }
 })
 
 
