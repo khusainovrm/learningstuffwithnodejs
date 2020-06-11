@@ -4,13 +4,20 @@ const fs = require('fs')
 const app = express()
 const {join} = require('path')
 const process = require('process')
+const bodyParser = require('body-parser')
 require('dotenv').config()
 
+// Создаем боди-парсер, для парснига пост-форм
+const urlEncodeParser = bodyParser.urlencoded({extended:false})
 
 const fileHome = path.resolve(__dirname, './public/home.html')
 const fileAbout = path.resolve(__dirname, './public/about.html')
+const fileRegister = path.resolve(__dirname, './public/register.html')
+
 
 let writableStream = fs.createWriteStream('hello.txt')
+
+
 writableStream.write(`Hello from NodeJS at ${new Date().toLocaleString()}`)
 
 let newWritableStream = fs.createWriteStream('some.txt')
@@ -32,6 +39,11 @@ app.use('/about',(req,res,next) => {
 app.get('/home', (req, res) => {
   fs.readFile(fileHome, (err, data) => {
     if (err) throw err
+    // Логирование
+    let log = `\nМетоды ${req.method} был вызван ${new Date().toLocaleString()}`
+    writableStream.write(log)
+    console.log(req.query);
+    
     res.sendFile(fileHome)
   })
 })
@@ -43,6 +55,27 @@ app.get('/about', (req, res) => {
   })
 })
 
+app.get('/register', (req, res) => {
+  fs.readFile(fileRegister, (err, data) => {
+    if (err) throw err
+    res.sendFile(fileRegister)
+  })
+})
+
+app.post('/register', urlEncodeParser, (req,res) => {
+  const name = req.body.userName
+  const age = req.body.userAge
+
+res.send(`<div class='greetings'>Добро пожаловать ${name}, Вам ${age}, вы очень молоды!</div>`)
+})
+
+
+app.get('/info', (req, res) => {
+  let id = req.query.user.id
+  // http://localhost:3000/info?user[id]=42
+  res.send(`The used query 'request.query.user.id is: ${id}`)
+})
+
 app.get('/stuff', (req, res) => {
   fs.readFile(path.resolve(__dirname, 'hello.txt'), (err, data) => {
     if (err) throw err
@@ -51,6 +84,11 @@ app.get('/stuff', (req, res) => {
 
   })
 })
+
+app.use('/log', (req, res) => {
+  res.redirect('home')
+})
+
 
 process.env.foo = 'bar'
 console.log('Using script with cross-env: ', process.env.NODE_ENV);
