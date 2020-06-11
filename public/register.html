@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register NodeJS</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="navbar">
-    <a href="/home">Home</a> &nbsp;
-    <a href="/about">About</a>
-  </div>
-  <h1>Register</h1>
-  <form action="/register" method="POST" name="registerForm">
-    <input type="text" name='userName'  placeholder="Напишите имя"/><br><br>
-    <input type="number" name='userAge' placeholder="Ваш возраст"><br><br>
-    <button type="submit" id='submit' value="Send">Send</button>
-  </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register NodeJS</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="/home">Home</a> &nbsp;
+      <a href="/about">About</a>
+    </div>
+    <h1>Register</h1>
+    <form action="/register" method="POST" name="registerForm">
+      <input
+        type="text"
+        name="userName"
+        placeholder="Напишите имя"
+      /><br /><br />
+      <input
+        type="number"
+        name="userAge"
+        placeholder="Ваш возраст"
+      /><br /><br />
+      <button type="submit" id="submit" value="Send">Send</button>
+    </form>
 
-  <script type="module" src="/register.js"></script>
-</body>
+    <script type="module" src="/register.js"></script>
+  </body>
 </html>

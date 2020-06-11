@@ -107,7 +107,14 @@ app.use('/log', (req, res) => {
   res.redirect('home')
 })
 
-// API
+// ----------------API-----------------------
+// GET
+app.get('/api/users', (req, res) => {
+  let content = fs.readFileSync(fileJsonUser, 'utf8')
+  let users = JSON.parse(content)
+  res.send(users)
+})
+
 app.get('/api/users/:id', (req, res) => {
   let content = fs.readFileSync(fileJsonUser, 'utf8')
   let users = JSON.parse(content)
@@ -116,19 +123,23 @@ app.get('/api/users/:id', (req, res) => {
   let user = null
   if (id) {
     user = users.filter(user => user['id'] === id)
-    console.log(id);
-    
-    console.log(user);
-    
     res.send(user)
   }
 })
 
+// POST
+app.post('/api/users', jsonParser, (req,res) => {
+  console.log(req.body);
+  
+})
 
+
+
+
+
+// PROCESS.EV
 process.env.foo = 'bar'
-console.log('Using script with cross-env: ', process.env.NODE_ENV);
-console.log('Using dotenv: ', process.env.myKey);
-
-
+// console.log('Using script with cross-env: ', process.env.NODE_ENV);
+// console.log('Using dotenv: ', process.env.myKey);
 
 app.listen(3000, () => console.log('Server has been started at', new Date().toLocaleTimeString()));
